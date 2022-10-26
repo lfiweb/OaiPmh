@@ -57,7 +57,7 @@ interface Repository
      * @param string $identifier
      * @return Record
      */
-    public function getRecord($metadataFormat, $identifier);
+    public function getRecord(string $metadataFormat, string $identifier);
 
     /**
      * @param string $metadataFormat metadata format of the records to be fetch or null if only headers are fetched
