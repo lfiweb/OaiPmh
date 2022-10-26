@@ -50,7 +50,7 @@ interface Repository
      * @param string $token
      * @return SetList
      */
-    public function listSetsByToken($token);
+    public function listSetsByToken(string $token);
 
     /**
      * @param string $metadataFormat
