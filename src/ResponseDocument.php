@@ -20,6 +20,9 @@
 
 namespace Picturae\OaiPmh;
 
+use DOMDocument;
+use DOMElement;
+use DOMException;
 use GuzzleHttp\Psr7\Response;
 use Picturae\OaiPmh\Exception\NoRecordsMatchException;
 use Psr\Http\Message\ResponseInterface;
@@ -47,12 +50,12 @@ class ResponseDocument
     private $status = '200';
 
     /**
-     * @var \DOMDocument
+     * @var DOMDocument
      */
     private $document;
 
     /**
-     * @return \DOMDocument
+     * @return DOMDocument
      */
     public function getDocument()
     {
@@ -60,7 +63,7 @@ class ResponseDocument
     }
 
     /**
-     * @param \DOMDocument $document
+     * @param DOMDocument $document
      */
     public function setDocument($document)
     {
@@ -71,7 +74,7 @@ class ResponseDocument
      */
     public function __construct()
     {
-        $this->document = new \DOMDocument('1.0', 'UTF-8');
+        $this->document = new DOMDocument('1.0', 'UTF-8');
         $this->document->formatOutput = true;
         $documentElement = $this->document->createElementNS('http://www.openarchives.org/OAI/2.0/', "OAI-PMH");
         $documentElement->setAttribute('xmlns', 'http://www.openarchives.org/OAI/2.0/');
@@ -87,7 +90,7 @@ class ResponseDocument
     /**
      * @param $name
      * @param string $value
-     * @return \DOMElement
+     * @return DOMElement
      */
     public function addElement($name, $value = null)
     {
@@ -135,13 +138,19 @@ class ResponseDocument
 
     /**
      * @param string $name
-     * @param \DOMDocument|string $value
-     * @return \DOMElement
+     * @param DOMDocument|string|null $value
+     * @return DOMElement
+     * @throws DOMException
      */
-    public function createElement($name, $value = NULL)
+    public function createElement(string $name, DOMDocument|string $value = NULL): DOMElement
     {
         $nameSpace = 'https://www.openarchives.org/OAI/2.0/';
-        $element = $this->document->createElementNS($nameSpace, $name, htmlspecialchars($value, ENT_XML1));
+        if ($value) {
+            $element = $this->document->createElementNS($nameSpace, $name, htmlspecialchars($value, ENT_XML1));
+        } else {
+            $element = $this->document->createElementNS($nameSpace, $name);
+        }
+
         return $element;
     }
 
