@@ -73,7 +73,7 @@ interface Repository
      * @param string $token
      * @return RecordList
      */
-    public function listRecordsByToken($token);
+    public function listRecordsByToken(string $token);
 
     /**
      * @param string $identifier
