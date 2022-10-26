@@ -53,11 +53,11 @@ interface Repository
     public function listSetsByToken(string $token);
 
     /**
-     * @param string $metadataFormat
+     * @param string|null $metadataFormat
      * @param string $identifier
      * @return Record
      */
-    public function getRecord(string $metadataFormat, string $identifier);
+    public function getRecord(?string $metadataFormat, string $identifier);
 
     /**
      * @param string $metadataFormat metadata format of the records to be fetch or null if only headers are fetched
