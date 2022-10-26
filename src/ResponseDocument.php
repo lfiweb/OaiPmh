@@ -138,9 +138,9 @@ class ResponseDocument
      * @param \DOMDocument|string $value
      * @return \DOMElement
      */
-    public function createElement($name, $value = '')
+    public function createElement($name, $value = null)
     {
-        $nameSpace = 'http://www.openarchives.org/OAI/2.0/';
+        $nameSpace = 'https://www.openarchives.org/OAI/2.0/';
         $element = $this->document->createElementNS($nameSpace, $name, htmlspecialchars($value, ENT_XML1));
         return $element;
     }
