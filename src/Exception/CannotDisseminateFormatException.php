@@ -24,7 +24,10 @@ use Picturae\OaiPmh\Exception;
 
 class CannotDisseminateFormatException extends Exception
 {
-    public function getErrorName()
+    /**
+     * @return string|null
+     */
+    public function getErrorName(): string|null
     {
         return "cannotDisseminateFormat";
     }

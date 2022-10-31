@@ -24,7 +24,10 @@ use Picturae\OaiPmh\Exception;
 
 class BadArgumentException extends Exception
 {
-    public function getErrorName()
+    /**
+     * @return string|null
+     */
+    public function getErrorName(): string|null
     {
         return "badArgument";
     }
