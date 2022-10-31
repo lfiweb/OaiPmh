@@ -22,14 +22,13 @@ namespace Picturae\OaiPmh\Validator;
 
 class SetSpecValidator implements ValidatorInterface
 {
-
     /**
      * Validate
      *
-     * @param string
+     * @param mixed $value
      * @return boolean
      */
-    public function isValid($value)
+    public function isValid(mixed $value): bool
     {
         if (preg_match("/^([A-Za-z0-9\-_\.!~\*'\(\)])+(:[A-Za-z0-9\-_\.!~\*'\(\)]+)*$/", $value) === 1) {
             return true;
