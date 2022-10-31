@@ -20,6 +20,8 @@
 
 namespace Picturae\OaiPmh\Implementation\Repository;
 
+use DateTime;
+use DOMDocument;
 use Picturae\OaiPmh\Interfaces\Repository\Identity as IdentityInterface;
 
 /**
@@ -33,55 +35,55 @@ class Identity implements IdentityInterface
     /**
      * @var string
      */
-    private $repositoryName;
+    private string $repositoryName;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
-    private $earliestDatestamp;
-
-    /**
-     * @var string
-     */
-    private $deletedRecord;
+    private DateTime $earliestDatestamp;
 
     /**
      * @var string
      */
-    private $granularity;
+    private string $deletedRecord;
+
+    /**
+     * @var string
+     */
+    private string $granularity;
 
     /**
      * @var string[]
      */
-    private $adminEmails;
+    private array $adminEmails;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private $compression;
+    private ?string $compression;
 
     /**
-     * @var \DOMDocument
+     * @var DOMDocument|null
      */
-    private $description;
+    private ?DOMDocument $description;
 
     /**
      * @param string $repositoryName
-     * @param \DateTime $earliestDatestamp
+     * @param DateTime $earliestDatestamp
      * @param string $deletedRecord
      * @param array $adminEmails
      * @param string $granularity
      * @param string|null $compression
-     * @param \DOMDocument|null $description
+     * @param DOMDocument|null $description
      */
     public function __construct(
-        $repositoryName,
-        \DateTime $earliestDatestamp,
-        $deletedRecord,
+        string $repositoryName,
+        DateTime $earliestDatestamp,
+        string $deletedRecord,
         array $adminEmails,
-        $granularity,
-        $compression = null,
-        \DOMDocument $description = null
+        string $granularity,
+        string $compression = null,
+        DOMDocument $description = null
     ) {
         $this->repositoryName = $repositoryName;
         $this->earliestDatestamp = $earliestDatestamp;
@@ -96,19 +98,19 @@ class Identity implements IdentityInterface
      * @return string
      * a human readable name for the repository
      */
-    public function getRepositoryName()
+    public function getRepositoryName(): string
     {
         return $this->repositoryName;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      * a datetime that is the guaranteed lower limit of all datestamps recording changes,modifications, or deletions
      * in the repository. A repository must not use datestamps lower than the one specified
      * by the content of the earliestDatestamp element. earliestDatestamp must be expressed at the finest granularity
      * supported by the repository.
      */
-    public function getEarliestDatestamp()
+    public function getEarliestDatestamp(): DateTime
     {
         return $this->earliestDatestamp;
     }
@@ -121,7 +123,7 @@ class Identity implements IdentityInterface
      * persistent
      * with meanings defined in the section on deletion.
      */
-    public function getDeletedRecord()
+    public function getDeletedRecord(): string
     {
         return $this->deletedRecord;
     }
@@ -131,7 +133,7 @@ class Identity implements IdentityInterface
      * the finest harvesting granularity supported by the repository. The legitimate values are
      * YYYY-MM-DD and YYYY-MM-DDThh:mm:ssZ with meanings as defined in ISO8601.
      */
-    public function getGranularity()
+    public function getGranularity(): string
     {
         return $this->granularity;
     }
@@ -139,7 +141,7 @@ class Identity implements IdentityInterface
     /**
      * @return string[] the e-mail address(es) of the administrator(s) of the repository.
      */
-    public function getAdminEmails()
+    public function getAdminEmails(): array
     {
         return $this->adminEmails;
     }
@@ -149,19 +151,19 @@ class Identity implements IdentityInterface
      * optional a compression encoding supported by the repository. The recommended values are those
      * defined for the Content-Encoding header in Section 14.11 of RFC 2616 describing HTTP 1.1
      */
-    public function getCompression()
+    public function getCompression(): ?string
     {
         return $this->compression;
     }
 
     /**
-     * @return \DOMDocument|null
+     * @return DOMDocument|null
      * optional an extensible mechanism for communities to describe their repositories. For
      * example, the description container could be used to include collection-level metadata in the response to the
      * Identify request. Implementation Guidelines are available to give directions with this respect. Each description
      * container must be accompanied by the URL of an XML schema describing the structure of the description container.
      */
-    public function getDescription()
+    public function getDescription(): ?DOMDocument
     {
         return $this->description;
     }

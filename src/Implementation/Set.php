@@ -20,6 +20,7 @@
 
 namespace Picturae\OaiPmh\Implementation;
 
+use DOMDocument;
 use Picturae\OaiPmh\Interfaces\Set as SetInterface;
 
 /**
@@ -33,30 +34,29 @@ class Set implements SetInterface
     /**
      * @var string
      */
-    private $spec;
+    private string $spec;
 
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
-     * @var \DOMDocument|null
+     * @var DOMDocument|null
      */
-    private $description;
+    private ?DOMDocument $description;
 
     /**
      * @param string $spec
      * @param string $name
-     * @param \DOMDocument|null $description
+     * @param DOMDocument|null $description
      */
-    public function __construct($spec, $name, \DOMDocument $description = null)
+    public function __construct(string $spec, string $name, DOMDocument $description = null)
     {
         $this->description = $description;
         $this->name = $name;
         $this->spec = $spec;
     }
-
 
     /**
      * @return string
@@ -65,7 +65,7 @@ class Set implements SetInterface
      * must not contain any colons [:]. Since a setSpec forms a unique identifier for the set within the repository, it
      * must be unique for each set. Flat set organizations have only sets with setSpec that do not contain any colons.
      */
-    public function getSpec()
+    public function getSpec(): string
     {
         return $this->spec;
     }
@@ -73,18 +73,18 @@ class Set implements SetInterface
     /**
      * @return string a short human-readable string naming the set.
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * @return \DOMDocument|null
+     * @return DOMDocument|null
      * an optional and repeatable container that may hold community-specific XML-encoded data about
      * the set; the accompanying Implementation Guidelines document provides suggestions regarding the usage of this
      * container.
      */
-    public function getDescription()
+    public function getDescription(): ?DOMDocument
     {
         return $this->description;
     }

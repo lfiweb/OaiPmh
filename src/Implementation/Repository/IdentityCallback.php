@@ -20,6 +20,9 @@
 
 namespace Picturae\OaiPmh\Implementation\Repository;
 
+use Closure;
+use DateTime;
+use DOMDocument;
 use Picturae\OaiPmh\Interfaces\Repository\Identity as IdentityInterface;
 
 /**
@@ -31,58 +34,58 @@ use Picturae\OaiPmh\Interfaces\Repository\Identity as IdentityInterface;
 class IdentityCallback implements IdentityInterface
 {
     /**
-     * @var string
+     * @var Closure|string
      */
-    private $repositoryName;
+    private Closure|string $repositoryName;
 
     /**
-     * @var \DateTime
+     * @var Closure|DateTime
      */
-    private $earliestDatestamp;
+    private Closure|DateTime $earliestDatestamp;
 
     /**
-     * @var string
+     * @var Closure|string
      */
-    private $deletedRecord;
+    private Closure|string $deletedRecord;
 
     /**
-     * @var string
+     * @var Closure|string
      */
-    private $granularity;
+    private Closure|string $granularity;
 
     /**
-     * @var string[]
+     * @var Closure|string[]
      */
-    private $adminEmails;
+    private Closure|array $adminEmails;
 
     /**
-     * @var string
+     * @var Closure|string|null
      */
-    private $compression;
+    private string|Closure|null $compression;
 
     /**
-     * @var \DOMDocument
+     * @var Closure|null|DOMDocument
      */
-    private $description;
+    private Closure|null|DOMDocument $description;
 
     /**
-     * @param \Closure|string $repositoryName
-     * @param \Closure|\DateTime $earliestDatestamp
-     * @param \Closure|string $deletedRecord
-     * @param \Closure|array $adminEmails
-     * @param \Closure|string $granularity
-     * @param \Closure|string|null $compression
-     * @param \Closure|\DOMDocument|null $description
+     * @param string|Closure $repositoryName
+     * @param DateTime|Closure $earliestDatestamp
+     * @param string|Closure $deletedRecord
+     * @param array|Closure $adminEmails
+     * @param string|Closure $granularity
+     * @param Closure|string|null $compression
+     * @param DOMDocument|Closure|null $description
      */
 
     public function __construct(
-        $repositoryName,
-        $earliestDatestamp,
-        $deletedRecord,
-        $adminEmails,
-        $granularity,
-        $compression = null,
-        $description = null
+        string|Closure $repositoryName,
+        DateTime|Closure $earliestDatestamp,
+        string|Closure $deletedRecord,
+        array|Closure $adminEmails,
+        string|Closure $granularity,
+        Closure|string $compression = null,
+        DOMDocument|Closure $description = null
     ) {
         $this->repositoryName = $repositoryName;
         $this->earliestDatestamp = $earliestDatestamp;
@@ -95,7 +98,7 @@ class IdentityCallback implements IdentityInterface
     
     private function load(&$valueOrCallback)
     {
-        if ($valueOrCallback instanceof \Closure) {
+        if ($valueOrCallback instanceof Closure) {
             $valueOrCallback = $valueOrCallback();
         }
         return $valueOrCallback;
@@ -105,19 +108,19 @@ class IdentityCallback implements IdentityInterface
      * @return string
      * a human readable name for the repository
      */
-    public function getRepositoryName()
+    public function getRepositoryName(): string
     {
         return $this->load($this->repositoryName);
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      * a datetime that is the guaranteed lower limit of all datestamps recording changes,modifications, or deletions
      * in the repository. A repository must not use datestamps lower than the one specified
      * by the content of the earliestDatestamp element. earliestDatestamp must be expressed at the finest granularity
      * supported by the repository.
      */
-    public function getEarliestDatestamp()
+    public function getEarliestDatestamp(): DateTime
     {
         return $this->load($this->earliestDatestamp);
     }
@@ -130,7 +133,7 @@ class IdentityCallback implements IdentityInterface
      * persistent
      * with meanings defined in the section on deletion.
      */
-    public function getDeletedRecord()
+    public function getDeletedRecord(): string
     {
         return $this->load($this->deletedRecord);
     }
@@ -140,7 +143,7 @@ class IdentityCallback implements IdentityInterface
      * the finest harvesting granularity supported by the repository. The legitimate values are
      * YYYY-MM-DD and YYYY-MM-DDThh:mm:ssZ with meanings as defined in ISO8601.
      */
-    public function getGranularity()
+    public function getGranularity(): string
     {
         return $this->load($this->granularity);
     }
@@ -148,7 +151,7 @@ class IdentityCallback implements IdentityInterface
     /**
      * @return string[] the e-mail address(es) of the administrator(s) of the repository.
      */
-    public function getAdminEmails()
+    public function getAdminEmails(): array
     {
         return $this->load($this->adminEmails);
     }
@@ -158,19 +161,19 @@ class IdentityCallback implements IdentityInterface
      * optional a compression encoding supported by the repository. The recommended values are those
      * defined for the Content-Encoding header in Section 14.11 of RFC 2616 describing HTTP 1.1
      */
-    public function getCompression()
+    public function getCompression(): ?string
     {
         return $this->load($this->compression);
     }
 
     /**
-     * @return \DOMDocument|null
+     * @return DOMDocument|null
      * optional an extensible mechanism for communities to describe their repositories. For
      * example, the description container could be used to include collection-level metadata in the response to the
      * Identify request. Implementation Guidelines are available to give directions with this respect. Each description
      * container must be accompanied by the URL of an XML schema describing the structure of the description container.
      */
-    public function getDescription()
+    public function getDescription(): ?DOMDocument
     {
         return $this->load($this->description);
     }

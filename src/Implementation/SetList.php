@@ -31,32 +31,32 @@ use Picturae\OaiPmh\Interfaces\Set as SetInterface;
 class SetList implements \Picturae\OaiPmh\Interfaces\SetList
 {
     /**
-     * @var string
+     * @var string|null
      */
-    private $resumptionToken;
+    private ?string $resumptionToken;
 
     /**
      * @var Set[]
      */
-    private $items;
+    private array $items;
 
     /**
-     * @var int
+     * @var int|null
      */
-    private $completeListSize;
+    private ?int $completeListSize;
     
     /**
-     * @var int
+     * @var int|null
      */
-    private $cursor;
+    private ?int $cursor;
     
     /**
      * @param Set[] $items
-     * @param null|string $resumptionToken
-     * @param null|int $completeListSize
-     * @param null|int $cursor
+     * @param string|null $resumptionToken
+     * @param int|null $completeListSize
+     * @param int|null $cursor
      */
-    public function __construct($items, $resumptionToken = null, $completeListSize = null, $cursor = null)
+    public function __construct(array $items, string $resumptionToken = null, int $completeListSize = null, int $cursor = null)
     {
         $this->items = $items;
         $this->resumptionToken = $resumptionToken;
@@ -66,9 +66,9 @@ class SetList implements \Picturae\OaiPmh\Interfaces\SetList
 
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getResumptionToken()
+    public function getResumptionToken(): ?string
     {
         return $this->resumptionToken;
     }
@@ -76,23 +76,23 @@ class SetList implements \Picturae\OaiPmh\Interfaces\SetList
     /**
      * @return SetInterface[]
      */
-    public function getItems()
+    public function getItems(): array
     {
         return $this->items;
     }
     
     /**
-     * @return int
+     * @return int|null
      */
-    public function getCompleteListSize()
+    public function getCompleteListSize(): ?int
     {
         return $this->completeListSize;
     }
     
     /**
-     * @return int
+     * @return int|null
      */
-    public function getCursor()
+    public function getCursor(): ?int
     {
         return $this->cursor;
     }
