@@ -37,27 +37,27 @@ class ResponseDocument
     /**
      * @var string
      */
-    private $output;
+    private string $output;
 
     /**
      * @var string[]
      */
-    private $headers = ['Content-Type' => 'text/xml; charset=utf8'];
+    private array $headers = ['Content-Type' => 'text/xml; charset=utf8'];
 
     /**
      * @var string
      */
-    private $status = '200';
+    private string $status = '200';
 
     /**
      * @var DOMDocument
      */
-    private $document;
+    private DOMDocument $document;
 
     /**
      * @return DOMDocument
      */
-    public function getDocument()
+    public function getDocument(): DOMDocument
     {
         return $this->document;
     }
@@ -65,7 +65,7 @@ class ResponseDocument
     /**
      * @param DOMDocument $document
      */
-    public function setDocument($document)
+    public function setDocument(DOMDocument $document): void
     {
         $this->document = $document;
     }
@@ -88,11 +88,12 @@ class ResponseDocument
     }
 
     /**
-     * @param $name
-     * @param string $value
+     * @param string $name
+     * @param string|null $value
      * @return DOMElement
+     * @throws DOMException
      */
-    public function addElement($name, $value = null)
+    public function addElement(string $name, string $value = null): DOMElement
     {
         $element = $this->createElement($name, $value);
         $this->document->documentElement->appendChild($element);
@@ -102,8 +103,9 @@ class ResponseDocument
     /**
      * adds an error node base on a Exception
      * @param Exception $error
+     * @throws DOMException
      */
-    public function addError(Exception $error)
+    public function addError(Exception $error): void
     {
         $errorNode = $this->addElement("error", $error->getMessage());
 
@@ -119,9 +121,9 @@ class ResponseDocument
     }
 
     /**
-     * @param \string[] $headers
+     * @param string[] $headers
      */
-    public function setHeaders($headers)
+    public function setHeaders(array $headers): void
     {
         $this->headers = $headers;
     }
@@ -130,7 +132,7 @@ class ResponseDocument
      * @param $header string
      * @return $this
      */
-    public function addHeader($header)
+    public function addHeader(string $header): static
     {
         $this->headers [] = $header;
         return $this;
@@ -150,9 +152,9 @@ class ResponseDocument
     }
 
     /**
-     * @return ResponseInterface
+     * @return Response|ResponseInterface
      */
-    public function getResponse()
+    public function getResponse(): Response|ResponseInterface
     {
         return new Response($this->status, $this->headers, $this->document->saveXML());
     }
