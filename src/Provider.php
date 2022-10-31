@@ -20,6 +20,11 @@
 
 namespace Picturae\OaiPmh;
 
+use Closure;
+use DateTime;
+use DateTimeZone;
+use DOMElement;
+use DOMException;
 use Picturae\OaiPmh\Exception\BadArgumentException;
 use Picturae\OaiPmh\Exception\BadVerbException;
 use Picturae\OaiPmh\Exception\MultipleExceptions;
@@ -62,7 +67,7 @@ class Provider
     /**
      * @var array containing all verbs and the arguments they except
      */
-    private static $verbs = [
+    private static array $verbs = [
         "Identify" => [],
         "ListMetadataFormats" => ['identifier'],
         "ListSets" => ['resumptionToken'],
@@ -74,36 +79,36 @@ class Provider
     /**
      * @var string the verb of the current request
      */
-    private $verb;
+    private string $verb;
 
     /**
      * @var ResponseDocument
      */
-    private $response;
+    private ResponseDocument $response;
 
     /**
      * @var Repository
      */
-    private $repository;
+    private Repository $repository;
 
     /**
      * @var array
      */
-    private $params = [];
+    private array $params = [];
 
     /**
      * @var ServerRequestInterface
      */
-    private $request;
+    private ServerRequestInterface $request;
 
     /**
      * @var array
      */
-    private $records = [];
+    private array $records = [];
 
     /**
      * @param Repository $repository
-     * @param ServerRequestInterface $request
+     * @param ServerRequestInterface|null $request
      */
     public function __construct(Repository $repository, ServerRequestInterface $request = null)
     {
@@ -117,7 +122,7 @@ class Provider
     /**
      * @return ServerRequestInterface
      */
-    public function getRequest()
+    public function getRequest(): ServerRequestInterface
     {
         return $this->request;
     }
@@ -125,7 +130,7 @@ class Provider
     /**
      * @param ServerRequestInterface $request
      */
-    public function setRequest(ServerRequestInterface $request)
+    public function setRequest(ServerRequestInterface $request): void
     {
         if ($request->getMethod() === 'POST') {
             $this->params = $request->getParsedBody();
@@ -136,12 +141,12 @@ class Provider
     }
 
     /**
-     * @param \DateTime $time
+     * @param DateTime $time
      * @return string
      */
-    private function toUtcDateTime(\DateTime $time)
+    private function toUtcDateTime(DateTime $time): string
     {
-        $UTC = new \DateTimeZone("UTC");
+        $UTC = new DateTimeZone("UTC");
         $time->setTimezone($UTC);
         return $time->format('Y-m-d\TH:i:s\Z');
     }
@@ -149,11 +154,12 @@ class Provider
     /**
      * handles the current request
      * @return ResponseInterface
+     * @throws DOMException
      */
-    public function getResponse()
+    public function getResponse(): ResponseInterface
     {
         $this->response = new ResponseDocument();
-        $this->response->addElement("responseDate", $this->toUtcDateTime(new \DateTime()));
+        $this->response->addElement("responseDate", $this->toUtcDateTime(new DateTime()));
         $requestNode = $this->response->createElement("request", $this->repository->getBaseUrl());
         $this->response->getDocument()->documentElement->appendChild($requestNode);
 
@@ -196,30 +202,24 @@ class Provider
 
     /**
      * executes the right function for the current verb
-     * @return \DOMElement
-     * @throws BadVerbException
+     * @return DOMElement
+     * @throws BadVerbException|DOMException
      */
-    private function doVerb()
+    private function doVerb(): DOMElement
     {
         switch ($this->verb) {
             case "Identify":
                 return $this->identify();
-                break;
             case "ListMetadataFormats":
                 return $this->listMetadataFormats();
-                break;
             case "ListSets":
                 return $this->listSets();
-                break;
             case "ListRecords":
                 return $this->listRecords();
-                break;
             case "ListIdentifiers":
                 return $this->listIdentifiers();
-                break;
             case "GetRecord":
                 return $this->getRecord();
-                break;
             default:
                 //shouldn't be possible to come here because verb was already checked, but just in case
                 throw new BadVerbException("$this->verb is not a valid verb");
@@ -228,10 +228,10 @@ class Provider
 
     /**
      * handles GetRecord requests
-     * @return \DOMElement
-     * @throws BadArgumentException
+     * @return DOMElement
+     * @throws BadArgumentException|DOMException
      */
-    private function getRecord()
+    private function getRecord(): DOMElement
     {
         $checks = [
             function () {
@@ -245,7 +245,7 @@ class Provider
                 }
                 $this->checkMetadataPrefix(
                     $this->params['metadataPrefix'],
-                    isset($this->params['identifier']) ? $this->params['identifier'] : null
+                    $this->params['identifier'] ?? null
                 );
             }
         ];
@@ -279,9 +279,10 @@ class Provider
 
     /**
      * handles Identify requests
-     * @return \DOMElement
+     * @return DOMElement
+     * @throws DOMException
      */
-    private function identify()
+    private function identify(): DOMElement
     {
         $identity = $this->repository->identify();
         $identityNode = $this->response->createElement('Identify');
@@ -310,14 +311,14 @@ class Provider
 
     /**
      * handles ListMetadataFormats requests
-     * @return \DOMElement
-     * @throws NoMetadataFormatsException
+     * @return DOMElement
+     * @throws NoMetadataFormatsException|DOMException
      */
-    private function listMetadataFormats()
+    private function listMetadataFormats(): DOMElement
     {
         $listNode = $this->response->createElement('ListMetadataFormats');
 
-        $identifier = isset($this->params['identifier']) ? $this->params['identifier'] : null;
+        $identifier = $this->params['identifier'] ?? null;
         $formats = $this->repository->listMetadataFormats($identifier);
 
         if (!count($formats)) {
@@ -341,7 +342,7 @@ class Provider
      * @throws BadVerbException
      * @throws MultipleExceptions
      */
-    private function checkVerb()
+    private function checkVerb(): void
     {
         if (!isset($this->params['verb'])) {
             throw new BadVerbException("Verb is missing");
@@ -377,10 +378,10 @@ class Provider
 
     /**
      * handles ListSets requests
-     * @return \DOMElement
-     * @throws NoSetHierarchyException
+     * @return DOMElement
+     * @throws NoSetHierarchyException|DOMException
      */
-    private function listSets()
+    private function listSets(): DOMElement
     {
         $listNode = $this->response->createElement('ListSets');
 
@@ -412,11 +413,11 @@ class Provider
 
     /**
      * handles ListSets Records
-     * @return \DOMElement
+     * @return DOMElement
      * @throws NoSetHierarchyException
-     * @throws NoRecordsMatchException
+     * @throws NoRecordsMatchException|DOMException
      */
-    private function listRecords()
+    private function listRecords(): DOMElement
     {
         $listNode = $this->response->createElement('ListRecords');
         if (isset($this->params['resumptionToken'])) {
@@ -468,11 +469,11 @@ class Provider
 
     /**
      * handles ListIdentifiers requests
-     * @return \DOMElement
+     * @return DOMElement
      * @throws NoSetHierarchyException
-     * @throws NoRecordsMatchException
+     * @throws NoRecordsMatchException|DOMException
      */
-    private function listIdentifiers()
+    private function listIdentifiers(): DOMElement
     {
         $listNode = $this->response->createElement('ListIdentifiers');
         if (isset($this->params['resumptionToken'])) {
@@ -506,9 +507,10 @@ class Provider
     /**
      * Converts the header of a record to a header node, used for both ListRecords and ListIdentifiers
      * @param Header $header
-     * @return \DOMElement
+     * @return DOMElement
+     * @throws DOMException
      */
-    private function getRecordHeaderNode(Header $header)
+    private function getRecordHeaderNode(Header $header): DOMElement
     {
         $headerNode = $this->response->createElement('header');
         $headerNode->appendChild($this->response->createElement('identifier', $header->getIdentifier()));
@@ -526,10 +528,10 @@ class Provider
 
     /**
      * does all the checks in the closures and merge any exceptions into one big exception
-     * @param \Closure[] $checks
+     * @param Closure[] $checks
      * @throws MultipleExceptions
      */
-    private function doChecks($checks)
+    private function doChecks(array $checks): void
     {
         $errors = [];
         foreach ($checks as $check) {
@@ -547,12 +549,11 @@ class Provider
     /**
      * Converts a date coming from a request param and converts it to a \DateTime
      * @param string $date
-     * @return [\DateTime, string]
-     * @throws BadArgumentException when the date is invalid or not supplied in the right format
+     * @return array [\DateTime, string]
      */
-    private function parseRequestDate($date)
+    private function parseRequestDate(string $date): array
     {
-        $timezone = new \DateTimeZone("UTC");
+        $timezone = new DateTimeZone("UTC");
         $granularity = null;
 
         if (preg_match('#^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$#', $date)) {
@@ -579,9 +580,10 @@ class Provider
     /**
      * Adds a resumptionToken to a a listNode if the is a resumption token otherwise it does nothing
      * @param ResultListInterface $resultList
-     * @param \DomElement $listNode
+     * @param DomElement $listNode
+     * @throws DOMException
      */
-    private function addResumptionToken(ResultListInterface $resultList, $listNode)
+    private function addResumptionToken(ResultListInterface $resultList, DOMElement $listNode): void
     {
         // @TODO Add support for expirationDate
 
@@ -612,15 +614,14 @@ class Provider
      * @return array
      * @throws BadArgumentException
      */
-    private function getRecordListParams()
+    private function getRecordListParams(): array
     {
         $metadataPrefix = null;
         $from = null;
         $until = null;
         $fromGranularity = null;
         $untilGranularity  = null;
-        $set = isset($this->params['set']) ? $this->params['set'] : null;
-
+        $set = $this->params['set'] ?? null;
 
         $checks = [
             function () use (&$from, &$fromGranularity) {
@@ -682,10 +683,10 @@ class Provider
     /**
      * Checks if the metadata prefix is in the available metadata formats list.
      * @param string $metadataPrefix
-     * @param string $identifier , optional argument that specifies the unique identifier of an item
+     * @param string|null $identifier , optional argument that specifies the unique identifier of an item
      * @throws CannotDisseminateFormatException
      */
-    private function checkMetadataPrefix($metadataPrefix, $identifier = null)
+    private function checkMetadataPrefix(string $metadataPrefix, string $identifier = null): void
     {
         $availableMetadataFormats = $this->repository->listMetadataFormats($identifier);
 
