@@ -76,12 +76,12 @@ class ResponseDocument
     {
         $this->document = new DOMDocument('1.0', 'UTF-8');
         $this->document->formatOutput = true;
-        $documentElement = $this->document->createElementNS('http://www.openarchives.org/OAI/2.0/', "OAI-PMH");
-        $documentElement->setAttribute('xmlns', 'http://www.openarchives.org/OAI/2.0/');
+        $documentElement = $this->document->createElementNS('https://www.openarchives.org/OAI/2.0/', "OAI-PMH");
+        $documentElement->setAttribute('xmlns', 'https://www.openarchives.org/OAI/2.0/');
         $documentElement->setAttributeNS(
-            "http://www.w3.org/2001/XMLSchema-instance",
+            "https://www.w3.org/2001/XMLSchema-instance",
             'xsi:schemaLocation',
-            'http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd'
+            'https://www.openarchives.org/OAI/2.0/ https://www.openarchives.org/OAI/2.0/OAI-PMH.xsd'
         );
 
         $this->document->appendChild($documentElement);
