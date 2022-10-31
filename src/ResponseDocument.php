@@ -138,19 +138,14 @@ class ResponseDocument
 
     /**
      * @param string $name
-     * @param DOMDocument|string|null $value
+     * @param DOMDocument|string $value
      * @return DOMElement
      * @throws DOMException
      */
-    public function createElement(string $name, DOMDocument|string $value = NULL): DOMElement
+    public function createElement(string $name, DOMDocument|string $value = ''): DOMElement
     {
         $nameSpace = 'https://www.openarchives.org/OAI/2.0/';
-        if ($value) {
-            $element = $this->document->createElementNS($nameSpace, $name, htmlspecialchars($value, ENT_XML1));
-        } else {
-            $element = $this->document->createElementNS($nameSpace, $name);
-        }
-
+        $element = $this->document->createElementNS($nameSpace, $name, htmlspecialchars($value, ENT_XML1));
         return $element;
     }
 
