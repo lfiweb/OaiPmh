@@ -20,6 +20,8 @@
 
 namespace Picturae\OaiPmh\Interfaces;
 
+use DOMDocument;
+
 interface Set
 {
 
@@ -30,18 +32,18 @@ interface Set
      * must not contain any colons [:]. Since a setSpec forms a unique identifier for the set within the repository, it
      * must be unique for each set. Flat set organizations have only sets with setSpec that do not contain any colons.
      */
-    public function getSpec();
+    public function getSpec(): string;
 
     /**
      * @return string a short human-readable string naming the set.
      */
-    public function getName();
+    public function getName(): string;
 
     /**
-     * @return \DOMDocument|null
+     * @return DOMDocument|null
      * an optional and repeatable container that may hold community-specific XML-encoded data about
      * the set; the accompanying Implementation Guidelines document provides suggestions regarding the usage of this
      * container.
      */
-    public function getDescription();
+    public function getDescription(): ?DOMDocument;
 }

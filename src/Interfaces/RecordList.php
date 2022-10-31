@@ -26,5 +26,5 @@ interface RecordList extends ResultList
     /**
      * @return Record[]
      */
-    public function getItems();
+    public function getItems(): array;
 }

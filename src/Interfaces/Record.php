@@ -20,6 +20,7 @@
 
 namespace Picturae\OaiPmh\Interfaces;
 
+use DOMDocument;
 use Picturae\OaiPmh\Interfaces\Record\Header;
 
 interface Record
@@ -29,19 +30,19 @@ interface Record
      * @return Header
      * contains the unique identifier of the item and properties necessary for selective harvesting.
      */
-    public function getHeader();
+    public function getHeader(): Header;
 
     /**
-     * @return \DOMDocument|null
+     * @return DOMDocument|null
      * an optional and repeatable container to hold data about the metadata part of the record. The contents of an about
      * container must conform to an XML Schema. Individual implementation communities may create XML Schema that define
      * specific uses for the contents of about containers.
      */
-    public function getAbout();
+    public function getAbout(): ?DOMDocument;
 
     /**
-     * @return \DOMDocument
+     * @return DOMDocument
      * a single manifestation of the metadata from an item
      */
-    public function getMetadata();
+    public function getMetadata(): DOMDocument;
 }

@@ -30,16 +30,16 @@ interface MetadataFormatType
      * ListIdentifiers, and GetRecord requests to retrieve records, or the headers of records that include metadata in
      * the format specified by the metadataPrefix;
      */
-    public function getPrefix();
+    public function getPrefix(): string;
 
     /**
      * @return string
      * The metadata schema URL - the URL of an XML schema to test validity of metadata expressed according to the format
      */
-    public function getSchema();
+    public function getSchema(): string;
 
     /**
      * @return string The XML namespace URI that is a global identifier of the metadata format.
      */
-    public function getNamespace();
+    public function getNamespace(): string;
 }

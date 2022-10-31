@@ -20,6 +20,7 @@
 
 namespace Picturae\OaiPmh\Interfaces;
 
+use DateTime;
 use Picturae\OaiPmh\Interfaces\Repository\Identity;
 
 interface Repository
@@ -27,57 +28,56 @@ interface Repository
     /**
      * @return string the base URL of the repository
      */
-    public function getBaseUrl();
+    public function getBaseUrl(): string;
     
     /**
      * @return string
      * the finest harvesting granularity supported by the repository. The legitimate values are
      * YYYY-MM-DD and YYYY-MM-DDThh:mm:ssZ with meanings as defined in ISO8601.
      */
-    public function getGranularity();
+    public function getGranularity(): string;
 
     /**
      * @return Identity
      */
-    public function identify();
+    public function identify(): Identity;
 
     /**
      * @return SetList
      */
-    public function listSets();
+    public function listSets(): SetList;
 
     /**
      * @param string $token
      * @return SetList
      */
-    public function listSetsByToken(string $token);
+    public function listSetsByToken(string $token): SetList;
 
     /**
      * @param string|null $metadataFormat
      * @param string $identifier
      * @return Record
      */
-    public function getRecord(?string $metadataFormat, string $identifier);
+    public function getRecord(?string $metadataFormat, string $identifier): Record;
 
     /**
-     * @param string $metadataFormat metadata format of the records to be fetch or null if only headers are fetched
-     * (listIdentifiers)
-     * @param \DateTime $from
-     * @param \DateTime $until
-     * @param string $set name of the set containing this record
+     * @param string|null $metadataFormat metadata format of the records to be fetch or null if only headers are fetched (listIdentifiers)
+     * @param DateTime|null $from
+     * @param DateTime|null $until
+     * @param string|null $set name of the set containing this record
      * @return RecordList
      */
-    public function listRecords($metadataFormat = null, \DateTime $from = null, \DateTime $until = null, $set = null);
+    public function listRecords(string $metadataFormat = null, DateTime $from = null, DateTime $until = null, string $set = null): RecordList;
 
     /**
      * @param string $token
      * @return RecordList
      */
-    public function listRecordsByToken(string $token);
+    public function listRecordsByToken(string $token): RecordList;
 
     /**
-     * @param string $identifier
+     * @param string|null $identifier
      * @return MetadataFormatType[]
      */
-    public function listMetadataFormats($identifier = null);
+    public function listMetadataFormats(string $identifier = null): array;
 }
