@@ -32,9 +32,9 @@ use Picturae\OaiPmh\Interfaces\RecordList as RecordListInterface;
 class RecordList implements RecordListInterface
 {
     /**
-     * @var string
+     * @var string|null
      */
-    private string $resumptionToken;
+    private ?string $resumptionToken;
 
     /**
      * @var Record[]
@@ -42,22 +42,22 @@ class RecordList implements RecordListInterface
     private array $items;
     
     /**
-     * @var int
+     * @var int|null
      */
-    private int $completeListSize;
+    private ?int $completeListSize;
     
     /**
-     * @var int
+     * @var int|null
      */
-    private int $cursor;
+    private ?int $cursor;
 
     /**
      * @param Set[] $items
-     * @param string $resumptionToken
-     * @param int $completeListSize
-     * @param int $cursor
+     * @param string|null $resumptionToken
+     * @param int|null $completeListSize
+     * @param int|null $cursor
      */
-    public function __construct(array $items, string $resumptionToken, int $completeListSize, int $cursor)
+    public function __construct(array $items, string $resumptionToken = null, int $completeListSize = null, int $cursor = null)
     {
         $this->items = $items;
         $this->resumptionToken = $resumptionToken;
@@ -66,9 +66,9 @@ class RecordList implements RecordListInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getResumptionToken(): string
+    public function getResumptionToken(): ?string
     {
         return $this->resumptionToken;
     }
@@ -82,17 +82,17 @@ class RecordList implements RecordListInterface
     }
     
     /**
-     * @return int
+     * @return int|null
      */
-    public function getCompleteListSize(): int
+    public function getCompleteListSize(): ?int
     {
         return $this->completeListSize;
     }
     
     /**
-     * @return int
+     * @return int|null
      */
-    public function getCursor(): int
+    public function getCursor(): ?int
     {
         return $this->cursor;
     }
