@@ -38,7 +38,7 @@ class Record implements RecordInterface
     private Header $header;
 
     /**
-     * @var DOMDocument
+     * @var DOMDocument|null
      */
     private ?DOMDocument $about;
 
