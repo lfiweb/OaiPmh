@@ -27,7 +27,7 @@ class BadArgumentException extends Exception
     /**
      * @return string|null
      */
-    public function getErrorName(): string|null
+    public function getErrorName(): ?string
     {
         return "badArgument";
     }
