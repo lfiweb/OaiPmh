@@ -32,14 +32,14 @@ use Picturae\OaiPmh\Interfaces\RecordList as RecordListInterface;
 class RecordList implements RecordListInterface
 {
     /**
-     * @var string|null
-     */
-    private ?string $resumptionToken;
-
-    /**
      * @var Record[]
      */
     private array $items;
+
+    /**
+     * @var string|null
+     */
+    private ?string $resumptionToken;
     
     /**
      * @var int|null
