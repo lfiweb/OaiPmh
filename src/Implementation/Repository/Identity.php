@@ -77,13 +77,13 @@ class Identity implements IdentityInterface
      * @param DOMDocument|null $description
      */
     public function __construct(
-        string $repositoryName,
-        DateTime $earliestDatestamp,
-        string $deletedRecord,
-        array $adminEmails,
-        string $granularity,
-        string $compression = null,
-        DOMDocument $description = null
+        string      $repositoryName,
+        DateTime    $earliestDatestamp,
+        string      $deletedRecord,
+        array       $adminEmails,
+        string      $granularity,
+        ?string     $compression = null,
+        ?DOMDocument $description = null
     ) {
         $this->repositoryName = $repositoryName;
         $this->earliestDatestamp = $earliestDatestamp;

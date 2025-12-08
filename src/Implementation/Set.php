@@ -51,7 +51,7 @@ class Set implements SetInterface
      * @param string $name
      * @param DOMDocument|null $description
      */
-    public function __construct(string $spec, string $name, DOMDocument $description = null)
+    public function __construct(string $spec, string $name, ?DOMDocument $description = null)
     {
         $this->description = $description;
         $this->name = $name;

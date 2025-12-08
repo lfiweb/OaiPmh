@@ -52,7 +52,7 @@ class Record implements RecordInterface
      * @param DOMDocument $metadata
      * @param DOMDocument|null $about
      */
-    public function __construct(Header $header, DOMDocument $metadata, DOMDocument $about = null)
+    public function __construct(Header $header, DOMDocument $metadata, ?DOMDocument $about = null)
     {
         $this->about = $about;
         $this->header = $header;

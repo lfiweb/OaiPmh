@@ -93,7 +93,7 @@ class ResponseDocument
      * @return DOMElement
      * @throws DOMException
      */
-    public function addElement(string $name, string $value = null): DOMElement
+    public function addElement(string $name, ?string $value = null): DOMElement
     {
         $element = $this->createElement($name, $value);
         $this->document->documentElement->appendChild($element);

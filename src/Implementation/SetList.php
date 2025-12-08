@@ -56,7 +56,7 @@ class SetList implements \Picturae\OaiPmh\Interfaces\SetList
      * @param int|null $completeListSize
      * @param int|null $cursor
      */
-    public function __construct(array $items, string $resumptionToken = null, int $completeListSize = null, int $cursor = null)
+    public function __construct(array $items, ?string $resumptionToken = null, ?int $completeListSize = null, ?int $cursor = null)
     {
         $this->items = $items;
         $this->resumptionToken = $resumptionToken;

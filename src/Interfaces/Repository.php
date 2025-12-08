@@ -67,7 +67,7 @@ interface Repository
      * @param string|null $set name of the set containing this record
      * @return RecordList
      */
-    public function listRecords(string $metadataFormat = null, DateTime $from = null, DateTime $until = null, string $set = null): RecordList;
+    public function listRecords(?string $metadataFormat = null, ?DateTime $from = null, ?DateTime $until = null, ?string $set = null): RecordList;
 
     /**
      * @param string $token
@@ -79,5 +79,5 @@ interface Repository
      * @param string|null $identifier
      * @return MetadataFormatType[]
      */
-    public function listMetadataFormats(string $identifier = null): array;
+    public function listMetadataFormats(?string $identifier = null): array;
 }

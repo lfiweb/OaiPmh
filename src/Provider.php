@@ -110,7 +110,7 @@ class Provider
      * @param Repository $repository
      * @param ServerRequestInterface|null $request
      */
-    public function __construct(Repository $repository, ServerRequestInterface $request = null)
+    public function __construct(Repository $repository, ?ServerRequestInterface $request = null)
     {
         $this->repository = $repository;
 
@@ -686,7 +686,7 @@ class Provider
      * @param string|null $identifier , optional argument that specifies the unique identifier of an item
      * @throws CannotDisseminateFormatException
      */
-    private function checkMetadataPrefix(string $metadataPrefix, string $identifier = null): void
+    private function checkMetadataPrefix(string $metadataPrefix, ?string $identifier = null): void
     {
         $availableMetadataFormats = $this->repository->listMetadataFormats($identifier);
 

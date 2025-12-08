@@ -79,13 +79,13 @@ class IdentityCallback implements IdentityInterface
      */
 
     public function __construct(
-        string|Closure $repositoryName,
-        DateTime|Closure $earliestDatestamp,
-        string|Closure $deletedRecord,
-        array|Closure $adminEmails,
-        string|Closure $granularity,
-        Closure|string $compression = null,
-        DOMDocument|Closure $description = null
+        string|Closure      $repositoryName,
+        DateTime|Closure    $earliestDatestamp,
+        string|Closure      $deletedRecord,
+        array|Closure       $adminEmails,
+        string|Closure      $granularity,
+        Closure|string|null $compression = null,
+        DOMDocument|Closure|null $description = null
     ) {
         $this->repositoryName = $repositoryName;
         $this->earliestDatestamp = $earliestDatestamp;
