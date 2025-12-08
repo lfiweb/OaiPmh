@@ -24,10 +24,5 @@
     "psr/http-message": "^1.0",
     "guzzlehttp/psr7": "^2.6",
     "ext-dom": "*"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^4.8",
-    "squizlabs/php_codesniffer": "^2.3",
-    "satooshi/php-coveralls": "^0.6.1"
   }
 }
