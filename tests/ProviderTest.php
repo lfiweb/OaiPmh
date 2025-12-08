@@ -30,7 +30,7 @@ use Picturae\OaiPmh\Implementation\Repository\Identity;
 use Picturae\OaiPmh\Implementation\Set;
 use Picturae\OaiPmh\Implementation\SetList;
 use Psr\Http\Message\ResponseInterface;
-use Zend\Diactoros\ServerRequest;
+use GuzzleHttp\Psr7\ServerRequest;
 
 class ProviderTest extends \PHPUnit_Framework_TestCase
 {

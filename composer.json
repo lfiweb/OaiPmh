@@ -22,19 +22,12 @@
   "require": {
     "php": "^8.4",
     "psr/http-message": "^1.0",
-    "guzzlehttp/psr7": "^1.2",
+    "guzzlehttp/psr7": "^2.6",
     "ext-dom": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "^4.8",
-    "zendframework/zend-diactoros": "^1.1",
     "squizlabs/php_codesniffer": "^2.3",
-    "satooshi/php-coveralls": "^0.6.1",
-    "jameshalsall/licenser": "dev-master"
-  },
-  "scripts": {
-    "post-install-cmd": [
-      "bash contrib/setup.sh"
-    ]
+    "satooshi/php-coveralls": "^0.6.1"
   }
 }

@@ -232,25 +232,34 @@ class Repository implements InterfaceRepository
 
 # Sending a response
 
-To create a request and send a response you will need something that can create a PSR 7 server request
-and emit a PSR 7 response
+To create a request and send a response you will need something that can create a PSR-7 server request
+and a way to emit a PSR-7 response.
 
-In this example we use zend-diactoros
+In this example we use Guzzle PSR-7 for the request object and emit the response manually:
 
 ```
-composer require zendframework/zend-diactoros
+composer require guzzlehttp/psr7
 ```
 
 ```php
 // Where $repository is an instance of \Picturae\OaiPmh\Interfaces\Repository
 $repository = new \Your\Implementation\Repository();
-$provider = new \Picturae\OaiPmh\Provider($repository);
 
-$request = Zend\Diactoros\ServerRequestFactory::fromGlobals();
-$provider = new Picturae\OaiPmh\Provider($repository, $request);
+// Create a PSR-7 ServerRequest (from PHP globals)
+$request = \GuzzleHttp\Psr7\ServerRequest::fromGlobals();
+
+// Build and get the response
+$provider = new \Picturae\OaiPmh\Provider($repository, $request);
 $response = $provider->getResponse();
-// Send PSR 7 Response
-(new Zend\Diactoros\Response\SapiEmitter())->emit($response);
+
+// Emit PSR-7 Response (simple example without extra dependencies)
+http_response_code((int) $response->getStatusCode());
+foreach ($response->getHeaders() as $name => $values) {
+    foreach ($values as $value) {
+        header($name . ': ' . $value, false);
+    }
+}
+echo (string) $response->getBody();
 ```
 ## Validators
 
