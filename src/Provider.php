@@ -570,7 +570,7 @@ class Provider
         }
 
         $parseResult = date_get_last_errors();
-        if (!$parsedDate || ($parseResult['error_count'] > 0) || ($parseResult['warning_count'] > 0)) {
+        if (!$parsedDate || ($parseResult && ($parseResult['error_count'] > 0 || $parseResult['warning_count'] > 0))) {
             throw new BadArgumentException("$date is not a valid date");
         }
 
