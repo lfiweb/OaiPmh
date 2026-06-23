@@ -26,8 +26,8 @@ interface ValidatorInterface
     /**
      * Validate
      *
-     * @param mixed
+     * @param mixed $value
      * @return boolean
      */
-    public function isValid($value);
+    public function isValid(mixed $value): bool;
 }

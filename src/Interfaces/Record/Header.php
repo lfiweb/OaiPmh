@@ -20,6 +20,8 @@
 
 namespace Picturae\OaiPmh\Interfaces\Record;
 
+use DateTime;
+
 interface Header
 {
 
@@ -27,23 +29,23 @@ interface Header
      * @return string
      * the unique identifier of this record
      */
-    public function getIdentifier();
+    public function getIdentifier(): string;
 
     /**
-     * @return \DateTime
+     * @return DateTime
      * the date of creation, modification or deletion of the record for the purpose of selective harvesting.
      */
-    public function getDatestamp();
+    public function getDatestamp(): DateTime;
 
     /**
      * @return array
      * the set memberships of the item for the purpose of selective harvesting.
      */
-    public function getSetSpecs();
+    public function getSetSpecs(): array;
 
     /**
      * @return boolean
      * indicator if the record is deleted, will be converted to status
      */
-    public function isDeleted();
+    public function isDeleted(): bool;
 }

@@ -20,6 +20,9 @@
 
 namespace Picturae\OaiPmh;
 
+use DOMDocument;
+use DOMElement;
+use DOMException;
 use GuzzleHttp\Psr7\Response;
 use Picturae\OaiPmh\Exception\NoRecordsMatchException;
 use Psr\Http\Message\ResponseInterface;
@@ -34,35 +37,35 @@ class ResponseDocument
     /**
      * @var string
      */
-    private $output;
+    private string $output;
 
     /**
      * @var string[]
      */
-    private $headers = ['Content-Type' => 'text/xml; charset=utf8'];
+    private array $headers = ['Content-Type' => 'text/xml; charset=utf8'];
 
     /**
      * @var string
      */
-    private $status = '200';
+    private string $status = '200';
 
     /**
-     * @var \DOMDocument
+     * @var DOMDocument
      */
-    private $document;
+    private DOMDocument $document;
 
     /**
-     * @return \DOMDocument
+     * @return DOMDocument
      */
-    public function getDocument()
+    public function getDocument(): DOMDocument
     {
         return $this->document;
     }
 
     /**
-     * @param \DOMDocument $document
+     * @param DOMDocument $document
      */
-    public function setDocument($document)
+    public function setDocument(DOMDocument $document): void
     {
         $this->document = $document;
     }
@@ -71,25 +74,26 @@ class ResponseDocument
      */
     public function __construct()
     {
-        $this->document = new \DOMDocument('1.0', 'UTF-8');
+        $this->document = new DOMDocument('1.0', 'UTF-8');
         $this->document->formatOutput = true;
-        $documentElement = $this->document->createElementNS('http://www.openarchives.org/OAI/2.0/', "OAI-PMH");
-        $documentElement->setAttribute('xmlns', 'http://www.openarchives.org/OAI/2.0/');
+        $documentElement = $this->document->createElementNS('https://www.openarchives.org/OAI/2.0/', "OAI-PMH");
+        $documentElement->setAttribute('xmlns', 'https://www.openarchives.org/OAI/2.0/');
         $documentElement->setAttributeNS(
-            "http://www.w3.org/2001/XMLSchema-instance",
+            "https://www.w3.org/2001/XMLSchema-instance",
             'xsi:schemaLocation',
-            'http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd'
+            'https://www.openarchives.org/OAI/2.0/ https://www.openarchives.org/OAI/2.0/OAI-PMH.xsd'
         );
 
         $this->document->appendChild($documentElement);
     }
 
     /**
-     * @param $name
-     * @param string $value
-     * @return \DOMElement
+     * @param string $name
+     * @param string|null $value
+     * @return DOMElement
+     * @throws DOMException
      */
-    public function addElement($name, $value = null)
+    public function addElement(string $name, ?string $value = null): DOMElement
     {
         $element = $this->createElement($name, $value);
         $this->document->documentElement->appendChild($element);
@@ -99,8 +103,9 @@ class ResponseDocument
     /**
      * adds an error node base on a Exception
      * @param Exception $error
+     * @throws DOMException
      */
-    public function addError(Exception $error)
+    public function addError(Exception $error): void
     {
         $errorNode = $this->addElement("error", $error->getMessage());
 
@@ -116,9 +121,9 @@ class ResponseDocument
     }
 
     /**
-     * @param \string[] $headers
+     * @param string[] $headers
      */
-    public function setHeaders($headers)
+    public function setHeaders(array $headers): void
     {
         $this->headers = $headers;
     }
@@ -127,7 +132,7 @@ class ResponseDocument
      * @param $header string
      * @return $this
      */
-    public function addHeader($header)
+    public function addHeader(string $header): static
     {
         $this->headers [] = $header;
         return $this;
@@ -135,20 +140,21 @@ class ResponseDocument
 
     /**
      * @param string $name
-     * @param \DOMDocument|string $value
-     * @return \DOMElement
+     * @param DOMDocument|string $value
+     * @return DOMElement
+     * @throws DOMException
      */
-    public function createElement($name, $value = null)
+    public function createElement(string $name, DOMDocument|string $value = ''): DOMElement
     {
-        $nameSpace = 'http://www.openarchives.org/OAI/2.0/';
+        $nameSpace = 'https://www.openarchives.org/OAI/2.0/';
         $element = $this->document->createElementNS($nameSpace, $name, htmlspecialchars($value, ENT_XML1));
         return $element;
     }
 
     /**
-     * @return ResponseInterface
+     * @return Response|ResponseInterface
      */
-    public function getResponse()
+    public function getResponse(): Response|ResponseInterface
     {
         return new Response($this->status, $this->headers, $this->document->saveXML());
     }

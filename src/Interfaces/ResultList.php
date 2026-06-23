@@ -25,20 +25,20 @@ interface ResultList
     /**
      * @return array
      */
-    public function getItems();
+    public function getItems(): array;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getResumptionToken();
+    public function getResumptionToken(): ?string;
     
     /**
-     * @return int
+     * @return int|null
      */
-    public function getCompleteListSize();
+    public function getCompleteListSize(): ?int;
     
     /**
-     * @return int
+     * @return int|null
      */
-    public function getCursor();
+    public function getCursor(): ?int;
 }

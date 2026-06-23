@@ -27,17 +27,17 @@ class MetadataFormatType implements MetadataFormatTypeInterface
     /**
      * @var string
      */
-    private $namespace;
+    private string $namespace;
 
     /**
      * @var string
      */
-    private $schema;
+    private string $schema;
 
     /**
      * @var string
      */
-    private $prefix;
+    private string $prefix;
 
 
     /**
@@ -45,7 +45,7 @@ class MetadataFormatType implements MetadataFormatTypeInterface
      * @param string $schema
      * @param string $namespace
      */
-    public function __construct($prefix, $schema, $namespace)
+    public function __construct(string $prefix, string $schema, string $namespace)
     {
         $this->namespace = $namespace;
         $this->prefix = $prefix;
@@ -60,7 +60,7 @@ class MetadataFormatType implements MetadataFormatTypeInterface
      * ListIdentifiers, and GetRecord requests to retrieve records, or the headers of records that include metadata in
      * the format specified by the metadataPrefix;
      */
-    public function getPrefix()
+    public function getPrefix(): string
     {
         return $this->prefix;
     }
@@ -69,7 +69,7 @@ class MetadataFormatType implements MetadataFormatTypeInterface
      * @return string
      * The metadata schema URL - the URL of an XML schema to test validity of metadata expressed according to the format
      */
-    public function getSchema()
+    public function getSchema(): string
     {
         return $this->schema;
     }
@@ -77,7 +77,7 @@ class MetadataFormatType implements MetadataFormatTypeInterface
     /**
      * @return string The XML namespace URI that is a global identifier of the metadata format.
      */
-    public function getNamespace()
+    public function getNamespace(): string
     {
         return $this->namespace;
     }

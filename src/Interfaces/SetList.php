@@ -24,7 +24,7 @@ interface SetList extends ResultList
 {
 
     /**
-     * @return Set[]
+     * @return array
      */
-    public function getItems();
+    public function getItems(): array;
 }

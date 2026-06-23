@@ -20,6 +20,7 @@
 
 namespace Picturae\OaiPmh\Implementation\Record;
 
+use DateTime;
 use Picturae\OaiPmh\Interfaces\Record\Header as HeaderInterface;
 
 /**
@@ -33,33 +34,33 @@ class Header implements HeaderInterface
     /**
      * @var string
      */
-    private $identifier;
+    private string $identifier;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
-    private $datestamp;
+    private DateTime $datestamp;
 
     /**
      * @var string[]
      */
-    private $setSpecs;
+    private array $setSpecs;
 
     /**
      * @var boolean
      */
-    private $deleted;
+    private bool $deleted;
 
     /**
      * Spec values must validate to regex ([A-Za-z0-9\-_\.!~\*'\(\)])+(:[A-Za-z0-9\-_\.!~\*'\(\)]+)*
      * check values with the SetSpecValidator
      *
      * @param string $identifier
-     * @param \DateTime $datestamp
+     * @param DateTime $datestamp
      * @param array $setSpecs
      * @param bool $deleted
      */
-    public function __construct($identifier, \DateTime $datestamp, $setSpecs = [], $deleted = false)
+    public function __construct(string $identifier, DateTime $datestamp, array $setSpecs = [], bool $deleted = false)
     {
         $this->identifier = $identifier;
         $this->datestamp = $datestamp;
@@ -67,21 +68,20 @@ class Header implements HeaderInterface
         $this->deleted = $deleted;
     }
 
-
     /**
      * @return string
      * the unique identifier of this record
      */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      * the date of creation, modification or deletion of the record for the purpose of selective harvesting.
      */
-    public function getDatestamp()
+    public function getDatestamp(): DateTime
     {
         return $this->datestamp;
     }
@@ -90,7 +90,7 @@ class Header implements HeaderInterface
      * @return array
      * the set memberships of the item for the purpose of selective harvesting.
      */
-    public function getSetSpecs()
+    public function getSetSpecs(): array
     {
         return $this->setSpecs;
     }
@@ -99,7 +99,7 @@ class Header implements HeaderInterface
      * @return boolean
      * indicator if the record is deleted, will be converted to status
      */
-    public function isDeleted()
+    public function isDeleted(): bool
     {
         return $this->deleted;
     }

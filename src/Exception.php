@@ -24,9 +24,9 @@ class Exception extends \InvalidArgumentException
 {
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getErrorName()
+    public function getErrorName(): ?string
     {
         return null;
     }

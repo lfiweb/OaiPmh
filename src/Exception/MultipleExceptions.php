@@ -20,14 +20,21 @@
 
 namespace Picturae\OaiPmh\Exception;
 
+use ArrayIterator;
+use IteratorAggregate;
 use Picturae\OaiPmh\Exception;
+use ReturnTypeWillChange;
 use Traversable;
 
-class MultipleExceptions extends Exception implements \IteratorAggregate
+class MultipleExceptions extends Exception implements IteratorAggregate
 {
-    private $exceptions = [];
+    private array $exceptions = [];
 
-    public function setExceptions($exceptions)
+    /**
+     * @param array $exceptions
+     * @return $this
+     */
+    public function setExceptions(array $exceptions): static
     {
         $this->exceptions = $exceptions;
         return $this;
@@ -37,11 +44,11 @@ class MultipleExceptions extends Exception implements \IteratorAggregate
      * (PHP 5 &gt;= 5.0.0)<br/>
      * Retrieve an external iterator
      * @link http://php.net/manual/en/iteratoraggregate.getiterator.php
-     * @return Traversable An instance of an object implementing <b>Iterator</b> or
+     * @return Traversable|ArrayIterator An instance of an object implementing <b>Iterator</b> or
      * <b>Traversable</b>
      */
-    public function getIterator()
+    #[ReturnTypeWillChange] public function getIterator(): Traversable|ArrayIterator
     {
-        return new \ArrayIterator($this->exceptions);
+        return new ArrayIterator($this->exceptions);
     }
 }
